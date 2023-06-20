@@ -1,0 +1,9 @@
+﻿  MyForm.cpp
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(460,19): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(509,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(511,11): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(538,21): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(602,21): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(645,20): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  MyForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  Test.vcxproj -> D:\GitHub\projects\alfatec\project\x64\Debug\Test.exe

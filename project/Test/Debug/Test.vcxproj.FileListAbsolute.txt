@@ -1,0 +1,2 @@
+C:\Users\Matko Brekalo\Desktop\Test\Test\Debug\Test.MyForm.resources
+C:\Users\Matko Brekalo\Desktop\Test\Test\Debug\Test.vcxproj.GenerateResource.cache

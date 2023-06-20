@@ -1,0 +1,9 @@
+C:\Users\M\Desktop\Test\Test\x64\Debug\Test.vcxproj.AssemblyReference.cache
+C:\Users\M\Desktop\Test\Test\x64\Debug\Test.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\M\Desktop\Test\Test\x64\Debug\Test.MyForm.resources
+C:\Users\M\Desktop\Test\Test\x64\Debug\Test.vcxproj.GenerateResource.cache
+C:\Users\M\Desktop\Test\Test\x64\Debug\Test.queue.resources
+D:\GitHub\projects\alfatec\project\Test\x64\Debug\Test.vcxproj.AssemblyReference.cache
+D:\GitHub\projects\alfatec\project\Test\x64\Debug\Test.vcxproj.SuggestedBindingRedirects.cache
+D:\GitHub\projects\alfatec\project\Test\x64\Debug\Test.MyForm.resources
+D:\GitHub\projects\alfatec\project\Test\x64\Debug\Test.vcxproj.GenerateResource.cache
