@@ -1,0 +1,10 @@
+Osnovne funkcionalnosti su više-manje dovršene, no preostao je najteži dio, TCP komunikacija sa HSM-om. 
+Testiranje osnovne komunikacije mogu odraditi doma, no za pravu komunikaciju moram imati pristup HSM uređaju.
+
+Visoki prioritet:
+- TCP komunikaciju sa HSM uređajem
+- spremanjem TCP komunikacije između uređaja
+
+Niski prioritet:
+- uvesti multithreading kako se GUI ne bi smrzavao
+- proučiti bolje načine upravljanja vremenom
