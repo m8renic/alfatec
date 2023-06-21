@@ -26,7 +26,7 @@ Class Test.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     System.Windows.Forms.Timer interval : Public
     System.Windows.Forms.TextBox repComNum : Public
     System.Windows.Forms.Button repCom : Public
-    System.Windows.Forms.Button connect : Public
+    System.Windows.Forms.Button connectB : Public
     System.Windows.Forms.ListBox LogBox : Public
     System.Windows.Forms.Button qC : Public
     System.Windows.Forms.Button qCL : Public
@@ -43,4 +43,5 @@ Class Test.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     interval_Tick(Object, EventArgs): PrivateScope, Public, HideBySig
     qCL_Click(Object, EventArgs): PrivateScope, Public, HideBySig
     qC_Click(Object, EventArgs): PrivateScope, Public, HideBySig
+    execComs_Click(Object, EventArgs): PrivateScope, Public, HideBySig
     remCom_Click(Object, EventArgs): PrivateScope, Public, HideBySig

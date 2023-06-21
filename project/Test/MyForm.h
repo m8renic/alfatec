@@ -1,4 +1,13 @@
+//--------------------------------------------------------------
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+
+#pragma comment(lib, "ws2_32.lib")
+//--------------------------------------------------------------
+
 #pragma once
+
+#include <winsock2.h>
 #include <Windows.h>
 #include <stdio.h>
 #include <iostream>
@@ -13,8 +22,9 @@ int infFlag = 0;
 int expand = 0;
 int cps = 0;
 int cc = 1;
+//SOCKET sock;
 
-namespace Test {
+namespace Test{
 
 	using namespace std;
 	using namespace System;
@@ -52,7 +62,8 @@ namespace Test {
 		public: System::Windows::Forms::Timer^ interval;
 		public: System::Windows::Forms::TextBox^ repComNum;
 		public: System::Windows::Forms::Button^ repCom;
-		public: System::Windows::Forms::Button^ connect;
+	public: System::Windows::Forms::Button^ connectB;
+
 		private: System::Windows::Forms::Label^ label3;
 		public: System::Windows::Forms::ListBox^ LogBox;
 		public: System::Windows::Forms::Button^ qC;
@@ -89,7 +100,7 @@ namespace Test {
 			this->interval = (gcnew System::Windows::Forms::Timer(this->components));
 			this->repComNum = (gcnew System::Windows::Forms::TextBox());
 			this->repCom = (gcnew System::Windows::Forms::Button());
-			this->connect = (gcnew System::Windows::Forms::Button());
+			this->connectB = (gcnew System::Windows::Forms::Button());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->LogBox = (gcnew System::Windows::Forms::ListBox());
 			this->qC = (gcnew System::Windows::Forms::Button());
@@ -111,7 +122,7 @@ namespace Test {
 			this->ip->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->ip->ForeColor = System::Drawing::Color::White;
-			this->ip->Location = System::Drawing::Point(12, 15);
+			this->ip->Location = System::Drawing::Point(7, 15);
 			this->ip->Name = L"ip";
 			this->ip->Size = System::Drawing::Size(120, 25);
 			this->ip->TabIndex = 0;
@@ -123,7 +134,7 @@ namespace Test {
 			this->ipv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->ipv->ForeColor = System::Drawing::Color::White;
-			this->ipv->Location = System::Drawing::Point(138, 12);
+			this->ipv->Location = System::Drawing::Point(133, 12);
 			this->ipv->Name = L"ipv";
 			this->ipv->Size = System::Drawing::Size(183, 31);
 			this->ipv->TabIndex = 1;
@@ -134,7 +145,7 @@ namespace Test {
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(344, 15);
+			this->label1->Location = System::Drawing::Point(339, 15);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(57, 25);
 			this->label1->TabIndex = 2;
@@ -146,7 +157,7 @@ namespace Test {
 			this->portv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->portv->ForeColor = System::Drawing::Color::White;
-			this->portv->Location = System::Drawing::Point(407, 12);
+			this->portv->Location = System::Drawing::Point(402, 12);
 			this->portv->MinimumSize = System::Drawing::Size(82, 20);
 			this->portv->Name = L"portv";
 			this->portv->Size = System::Drawing::Size(82, 31);
@@ -172,7 +183,7 @@ namespace Test {
 			this->com->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->com->ForeColor = System::Drawing::Color::White;
-			this->com->Location = System::Drawing::Point(12, 76);
+			this->com->Location = System::Drawing::Point(7, 76);
 			this->com->Name = L"com";
 			this->com->Size = System::Drawing::Size(115, 25);
 			this->com->TabIndex = 5;
@@ -184,7 +195,7 @@ namespace Test {
 			this->comv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->comv->ForeColor = System::Drawing::Color::White;
-			this->comv->Location = System::Drawing::Point(133, 73);
+			this->comv->Location = System::Drawing::Point(128, 73);
 			this->comv->Name = L"comv";
 			this->comv->Size = System::Drawing::Size(467, 31);
 			this->comv->TabIndex = 6;
@@ -195,7 +206,7 @@ namespace Test {
 			this->logl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->logl->ForeColor = System::Drawing::Color::White;
-			this->logl->Location = System::Drawing::Point(12, 221);
+			this->logl->Location = System::Drawing::Point(7, 221);
 			this->logl->Name = L"logl";
 			this->logl->Size = System::Drawing::Size(88, 25);
 			this->logl->TabIndex = 7;
@@ -207,7 +218,7 @@ namespace Test {
 			this->logFileName->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->logFileName->ForeColor = System::Drawing::Color::White;
-			this->logFileName->Location = System::Drawing::Point(106, 218);
+			this->logFileName->Location = System::Drawing::Point(101, 218);
 			this->logFileName->Name = L"logFileName";
 			this->logFileName->ReadOnly = true;
 			this->logFileName->Size = System::Drawing::Size(494, 31);
@@ -219,7 +230,7 @@ namespace Test {
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label2->ForeColor = System::Drawing::Color::White;
-			this->label2->Location = System::Drawing::Point(12, 122);
+			this->label2->Location = System::Drawing::Point(7, 122);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(190, 25);
 			this->label2->TabIndex = 9;
@@ -236,7 +247,7 @@ namespace Test {
 			this->repComNum->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->repComNum->ForeColor = System::Drawing::Color::White;
-			this->repComNum->Location = System::Drawing::Point(208, 122);
+			this->repComNum->Location = System::Drawing::Point(203, 122);
 			this->repComNum->Name = L"repComNum";
 			this->repComNum->Size = System::Drawing::Size(87, 31);
 			this->repComNum->TabIndex = 10;
@@ -248,7 +259,7 @@ namespace Test {
 			this->repCom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->repCom->ForeColor = System::Drawing::Color::Black;
-			this->repCom->Location = System::Drawing::Point(301, 122);
+			this->repCom->Location = System::Drawing::Point(296, 122);
 			this->repCom->Name = L"repCom";
 			this->repCom->Size = System::Drawing::Size(146, 31);
 			this->repCom->TabIndex = 11;
@@ -256,19 +267,19 @@ namespace Test {
 			this->repCom->UseVisualStyleBackColor = false;
 			this->repCom->Click += gcnew System::EventHandler(this, &MyForm::repCom_Click);
 			// 
-			// connect
+			// connectB
 			// 
-			this->connect->BackColor = System::Drawing::Color::Silver;
-			this->connect->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->connectB->BackColor = System::Drawing::Color::Silver;
+			this->connectB->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->connect->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->connect->Location = System::Drawing::Point(495, 12);
-			this->connect->Name = L"connect";
-			this->connect->Size = System::Drawing::Size(105, 33);
-			this->connect->TabIndex = 12;
-			this->connect->Text = L"Connect";
-			this->connect->UseVisualStyleBackColor = false;
-			this->connect->Click += gcnew System::EventHandler(this, &MyForm::connect_Click);
+			this->connectB->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->connectB->Location = System::Drawing::Point(495, 12);
+			this->connectB->Name = L"connectB";
+			this->connectB->Size = System::Drawing::Size(100, 33);
+			this->connectB->TabIndex = 12;
+			this->connectB->Text = L"Connect";
+			this->connectB->UseVisualStyleBackColor = false;
+			this->connectB->Click += gcnew System::EventHandler(this, &MyForm::connect_Click);
 			// 
 			// label3
 			// 
@@ -276,7 +287,7 @@ namespace Test {
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label3->ForeColor = System::Drawing::Color::White;
-			this->label3->Location = System::Drawing::Point(12, 265);
+			this->label3->Location = System::Drawing::Point(7, 265);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(54, 25);
 			this->label3->TabIndex = 13;
@@ -325,7 +336,7 @@ namespace Test {
 			this->cps_speed->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
 			this->cps_speed->ForeColor = System::Drawing::Color::White;
-			this->cps_speed->Location = System::Drawing::Point(546, 122);
+			this->cps_speed->Location = System::Drawing::Point(541, 122);
 			this->cps_speed->Name = L"cps_speed";
 			this->cps_speed->Size = System::Drawing::Size(54, 31);
 			this->cps_speed->TabIndex = 18;
@@ -337,7 +348,7 @@ namespace Test {
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
 			this->label4->ForeColor = System::Drawing::Color::White;
-			this->label4->Location = System::Drawing::Point(479, 125);
+			this->label4->Location = System::Drawing::Point(474, 125);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(61, 25);
 			this->label4->TabIndex = 19;
@@ -358,7 +369,7 @@ namespace Test {
 			// 
 			// prog
 			// 
-			this->prog->Location = System::Drawing::Point(17, 166);
+			this->prog->Location = System::Drawing::Point(12, 166);
 			this->prog->Name = L"prog";
 			this->prog->Size = System::Drawing::Size(583, 23);
 			this->prog->Step = 1;
@@ -431,7 +442,7 @@ namespace Test {
 			this->Controls->Add(this->qC);
 			this->Controls->Add(this->LogBox);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->connect);
+			this->Controls->Add(this->connectB);
 			this->Controls->Add(this->repCom);
 			this->Controls->Add(this->repComNum);
 			this->Controls->Add(this->label2);
@@ -516,9 +527,41 @@ namespace Test {
 		public: System::Void connect_Click(System::Object^ sender, System::EventArgs^ e) {
 			string ip = msclr::interop::marshal_as<std::string>(ipv->Text);
 			string port = msclr::interop::marshal_as<std::string>(portv->Text);
+			
+			/*//TCP connect code
+			//--------------------------------------------------------------
+			// Init WINSOCK
+			WSAData wsaData;
+			WORD DllVersion = MAKEWORD(2, 1);
+			if (WSAStartup(DllVersion, &wsaData) != 0) {
+				fprintf(stderr, "WSAStartup()\n");
+				getchar();
+				ExitProcess(EXIT_FAILURE);
+			}
 
-			//TCP connect code
+			// Create socket
+			SOCKET sock = socket(INADDR_ANY, SOCK_STREAM, 0);
+			if (sock < 0) {
+				fprintf(stderr, "socket()\n");
+				getchar();
+				ExitProcess(EXIT_FAILURE);
+			}
 
+			// Define server info
+			SOCKADDR_IN sin;
+			ZeroMemory(&sin, sizeof(sin));
+			sin.sin_family = INADDR_ANY;
+			sin.sin_addr.s_addr = inet_addr(ip.c_str());
+			sin.sin_port = htons(stoi(port));
+
+			// Connect to server
+			if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) != 0) {
+				closesocket(sock);
+				fprintf(stderr, "connect()\n");
+				getchar();
+				ExitProcess(EXIT_FAILURE);
+			}
+			//--------------------------------------------------------------*/
 		}
 		public: System::Void ex_Click(System::Object^ sender, System::EventArgs^ e) {
 			//Thread this
@@ -526,10 +569,9 @@ namespace Test {
 			//std::thread thr(sending);
 			//thr.join();
 
-			if (msclr::interop::marshal_as<std::string>(comv->Text).empty()) {
+			if(msclr::interop::marshal_as<std::string>(comv->Text).empty()){
 				cout << "\nEmpty";
-			}
-			else {
+			}else{
 				int c = stoi(msclr::interop::marshal_as<string>(repComNum->Text));
 				int n = stoi(msclr::interop::marshal_as<string>(repComNum->Text));
 				int j = 1;
@@ -543,7 +585,7 @@ namespace Test {
 					m = time.substr(14, 2);
 					s = time.substr(17, 2);
 
-					if (i + 1 == 60 * j) {
+					if(i + 1 == cps * j){
 						Sleep(1000);
 						j++;
 					}
@@ -551,8 +593,30 @@ namespace Test {
 					string format = "-> " + h + ":" + m + ":" + s + "\t" + msclr::interop::marshal_as<std::string>(comv->Text) + "\n";
 					fprintf(logF, format.c_str());
 					LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
-					//TCP send code, w/e
+					/*//TCP send code, w/e
+					//--------------------------------------------------------------
+					// Send data to server
+					const char szMsg[] = "";
+					if (!send(sock, szMsg, strlen(szMsg), 0)) {
+						closesocket(sock);
+						fprintf(stderr, "send()\n");
+						getchar();
+						ExitProcess(EXIT_FAILURE);
+					}
 
+					// Recieve data back from server
+					char szBuffer[4096];
+					char szTemp[4096];
+					while(recv(sock, szTemp, 4096, 0)){
+						strcat(szBuffer, szTemp);
+					}
+					//printf("%s\n", szBuffer);
+					fprintf(logF, szBuffer);
+
+					closesocket(sock);
+					getchar();
+					ExitProcess(EXIT_SUCCESS);
+					//--------------------------------------------------------------*/
 					prog->Value = 100 / c;
 					c--;
 				}
@@ -636,7 +700,7 @@ namespace Test {
 				comv->Text = "";
 			}
 		}
-		private: System::Void execComs_Click(System::Object^ sender, System::EventArgs^ e) {
+		public: System::Void execComs_Click(System::Object^ sender, System::EventArgs^ e) {
 			int c = queueList->Items->Count;
 			int n = queueList->Items->Count;
 			for(int i = 0; i < n; i++){
