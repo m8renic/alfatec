@@ -22,7 +22,7 @@ int infFlag = 0;
 int expand = 0;
 int cps = 0;
 int cc = 1;
-//SOCKET sock;
+SOCKET sock;
 
 namespace Test{
 
@@ -62,7 +62,7 @@ namespace Test{
 		public: System::Windows::Forms::Timer^ interval;
 		public: System::Windows::Forms::TextBox^ repComNum;
 		public: System::Windows::Forms::Button^ repCom;
-	public: System::Windows::Forms::Button^ connectB;
+
 
 		private: System::Windows::Forms::Label^ label3;
 		public: System::Windows::Forms::ListBox^ LogBox;
@@ -100,7 +100,6 @@ namespace Test{
 			this->interval = (gcnew System::Windows::Forms::Timer(this->components));
 			this->repComNum = (gcnew System::Windows::Forms::TextBox());
 			this->repCom = (gcnew System::Windows::Forms::Button());
-			this->connectB = (gcnew System::Windows::Forms::Button());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->LogBox = (gcnew System::Windows::Forms::ListBox());
 			this->qC = (gcnew System::Windows::Forms::Button());
@@ -145,7 +144,7 @@ namespace Test{
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(339, 15);
+			this->label1->Location = System::Drawing::Point(423, 12);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(57, 25);
 			this->label1->TabIndex = 2;
@@ -157,10 +156,10 @@ namespace Test{
 			this->portv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->portv->ForeColor = System::Drawing::Color::White;
-			this->portv->Location = System::Drawing::Point(402, 12);
+			this->portv->Location = System::Drawing::Point(486, 12);
 			this->portv->MinimumSize = System::Drawing::Size(82, 20);
 			this->portv->Name = L"portv";
-			this->portv->Size = System::Drawing::Size(82, 31);
+			this->portv->Size = System::Drawing::Size(109, 31);
 			this->portv->TabIndex = 3;
 			// 
 			// logo
@@ -266,20 +265,6 @@ namespace Test{
 			this->repCom->Text = L"Until stopped";
 			this->repCom->UseVisualStyleBackColor = false;
 			this->repCom->Click += gcnew System::EventHandler(this, &MyForm::repCom_Click);
-			// 
-			// connectB
-			// 
-			this->connectB->BackColor = System::Drawing::Color::Silver;
-			this->connectB->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->connectB->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->connectB->Location = System::Drawing::Point(495, 12);
-			this->connectB->Name = L"connectB";
-			this->connectB->Size = System::Drawing::Size(100, 33);
-			this->connectB->TabIndex = 12;
-			this->connectB->Text = L"Connect";
-			this->connectB->UseVisualStyleBackColor = false;
-			this->connectB->Click += gcnew System::EventHandler(this, &MyForm::connect_Click);
 			// 
 			// label3
 			// 
@@ -442,7 +427,6 @@ namespace Test{
 			this->Controls->Add(this->qC);
 			this->Controls->Add(this->LogBox);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->connectB);
 			this->Controls->Add(this->repCom);
 			this->Controls->Add(this->repComNum);
 			this->Controls->Add(this->label2);
@@ -520,15 +504,8 @@ namespace Test{
 			sprintf(newLog, "logs\\%s.txt", timestamp.c_str());
 
 			logF = fopen(newLog, "a");
-		}
-		public: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-			fclose(logF);
-		}
-		public: System::Void connect_Click(System::Object^ sender, System::EventArgs^ e) {
-			string ip = msclr::interop::marshal_as<std::string>(ipv->Text);
-			string port = msclr::interop::marshal_as<std::string>(portv->Text);
-			
-			/*//TCP connect code
+
+			//TCP connect code
 			//--------------------------------------------------------------
 			// Init WINSOCK
 			WSAData wsaData;
@@ -540,28 +517,15 @@ namespace Test{
 			}
 
 			// Create socket
-			SOCKET sock = socket(INADDR_ANY, SOCK_STREAM, 0);
+			sock = socket(AF_INET, SOCK_STREAM, 0);
 			if (sock < 0) {
 				fprintf(stderr, "socket()\n");
 				getchar();
 				ExitProcess(EXIT_FAILURE);
 			}
-
-			// Define server info
-			SOCKADDR_IN sin;
-			ZeroMemory(&sin, sizeof(sin));
-			sin.sin_family = INADDR_ANY;
-			sin.sin_addr.s_addr = inet_addr(ip.c_str());
-			sin.sin_port = htons(stoi(port));
-
-			// Connect to server
-			if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) != 0) {
-				closesocket(sock);
-				fprintf(stderr, "connect()\n");
-				getchar();
-				ExitProcess(EXIT_FAILURE);
-			}
-			//--------------------------------------------------------------*/
+		}
+		public: System::Void MyForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+			fclose(logF);
 		}
 		public: System::Void ex_Click(System::Object^ sender, System::EventArgs^ e) {
 			//Thread this
@@ -575,6 +539,25 @@ namespace Test{
 				int c = stoi(msclr::interop::marshal_as<string>(repComNum->Text));
 				int n = stoi(msclr::interop::marshal_as<string>(repComNum->Text));
 				int j = 1;
+
+				string ip = msclr::interop::marshal_as<std::string>(ipv->Text);
+				string port = msclr::interop::marshal_as<std::string>(portv->Text);
+
+				// Define server info
+				SOCKADDR_IN sin;
+				ZeroMemory(&sin, sizeof(sin));
+				sin.sin_family = AF_INET;
+				sin.sin_addr.s_addr = inet_addr(ip.c_str());
+				sin.sin_port = htons(stoi(port));
+
+				// Connect to server
+				if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) != 0) {
+					closesocket(sock);
+					fprintf(stderr, "connect()\n");
+					getchar();
+					//ExitProcess(EXIT_FAILURE);
+				}
+
 				for (int i = 0; i < n; i++) {
 					time_t now = time(0);
 					char* buffer = ctime(&now);
@@ -593,33 +576,88 @@ namespace Test{
 					string format = "-> " + h + ":" + m + ":" + s + "\t" + msclr::interop::marshal_as<std::string>(comv->Text) + "\n";
 					fprintf(logF, format.c_str());
 					LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
+					
 					/*//TCP send code, w/e
 					//--------------------------------------------------------------
 					// Send data to server
-					const char szMsg[] = "";
-					if (!send(sock, szMsg, strlen(szMsg), 0)) {
+					string ip = msclr::interop::marshal_as<std::string>(ipv->Text);
+					string port = msclr::interop::marshal_as<std::string>(portv->Text);
+
+					// Define server info
+					SOCKADDR_IN sin;
+					ZeroMemory(&sin, sizeof(sin));
+					sin.sin_family = AF_INET;
+					sin.sin_addr.s_addr = inet_addr(ip.c_str());
+					sin.sin_port = htons(stoi(port));
+
+					// Connect to server
+					if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) != 0) {
+						closesocket(sock);
+						fprintf(stderr, "connect()\n");
+						getchar();
+						//ExitProcess(EXIT_FAILURE);
+					}*/
+
+					if (!send(sock, (msclr::interop::marshal_as<std::string>(comv->Text)).c_str(), strlen((msclr::interop::marshal_as<std::string>(comv->Text)).c_str()), 0)){
 						closesocket(sock);
 						fprintf(stderr, "send()\n");
 						getchar();
 						ExitProcess(EXIT_FAILURE);
 					}
+					cout << "Sent data! Preparing to receive!\n";
 
 					// Recieve data back from server
-					char szBuffer[4096];
+					/*char szBuffer[4096];
 					char szTemp[4096];
 					while(recv(sock, szTemp, 4096, 0)){
-						strcat(szBuffer, szTemp);
-					}
-					//printf("%s\n", szBuffer);
-					fprintf(logF, szBuffer);
+						strcpy(szBuffer, szTemp);
+						cout << "In!\n" << szTemp;
+					}*/
 
-					closesocket(sock);
-					getchar();
-					ExitProcess(EXIT_SUCCESS);
+					int iResult;
+					char recvbuf[512];
+					int recvbuflen = 512;
+
+					do {
+						iResult = recv(sock, recvbuf, recvbuflen, 0);
+						if (iResult > 0) {
+							cout << "Data received!\n";
+							
+							h = time.substr(11, 2);
+							m = time.substr(14, 2);
+							s = time.substr(17, 2);
+
+							format = "<- " + h + ":" + m + ":" + s + "\t" + recvbuf + "\n";
+
+							fprintf(logF, format.c_str());
+							LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
+							iResult = -1;
+						}
+						else if (iResult == 0) {
+							std::cout << "Connection closing...\n";
+						}
+						else {
+							std::cout << "recv failed with error: " << WSAGetLastError() << "\n";
+							closesocket(sock);
+							WSACleanup();
+							ExitProcess(EXIT_FAILURE);
+						}
+					} while (iResult > 0);
+
+					/*h = time.substr(11, 2);
+					m = time.substr(14, 2);
+					s = time.substr(17, 2);
+
+					format = "<- " + h + ":" + m + ":" + s + "\t" + szTemp + "\n";
+
+					//printf("%s\n", szBuffer);
+					fprintf(logF, format.c_str());
+					cout << "Data received!\n";
 					//--------------------------------------------------------------*/
 					prog->Value = 100 / c;
 					c--;
 				}
+				closesocket(sock);
 				comv->Text = "";
 			}
 		}
@@ -650,10 +688,30 @@ namespace Test{
 					interval->Enabled = true;
 					interval->Interval = 10;
 					interval->Tick += gcnew System::EventHandler(this, &MyForm::interval_Tick);
+
+					string ip = msclr::interop::marshal_as<std::string>(ipv->Text);
+					string port = msclr::interop::marshal_as<std::string>(portv->Text);
+
+					// Define server info
+					SOCKADDR_IN sin;
+					ZeroMemory(&sin, sizeof(sin));
+					sin.sin_family = AF_INET;
+					sin.sin_addr.s_addr = inet_addr(ip.c_str());
+					sin.sin_port = htons(stoi(port));
+
+					// Connect to server
+					if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) != 0) {
+						closesocket(sock);
+						fprintf(stderr, "connect()\n");
+						getchar();
+						//ExitProcess(EXIT_FAILURE);
+					}
 				}else{
 					infFlag--;
 					interval->Enabled = false;
 					interval->Tick -= gcnew System::EventHandler(this, &MyForm::interval_Tick);
+					closesocket(sock);
+					comv->Text = "";
 				}
 			}
 		}
@@ -671,9 +729,48 @@ namespace Test{
 					m = time.substr(14, 2);
 					s = time.substr(17, 2);
 
-					string format = "-> " + h + ":" + m + ":" + s + "\t" + msclr::interop::marshal_as<std::string>(comv->Text) + "\n";
+					string format = "-> " + h + ":" + m + ":" + s + "    " + msclr::interop::marshal_as<std::string>(comv->Text) + "\n";
 					fprintf(logF, format.c_str());
 					LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
+
+					if (!send(sock, (msclr::interop::marshal_as<std::string>(comv->Text)).c_str(), strlen((msclr::interop::marshal_as<std::string>(comv->Text)).c_str()), 0)) {
+						closesocket(sock);
+						fprintf(stderr, "send()\n");
+						getchar();
+						ExitProcess(EXIT_FAILURE);
+					}
+					cout << "Sent data! Preparing to receive!\n";
+
+					int iResult;
+					char recvbuf[512];
+					int recvbuflen = 512;
+
+					do {
+						iResult = recv(sock, recvbuf, recvbuflen, 0);
+						if (iResult > 0) {
+							cout << "Data received!\n";
+
+							h = time.substr(11, 2);
+							m = time.substr(14, 2);
+							s = time.substr(17, 2);
+
+							format = "<- " + h + ":" + m + ":" + s + "    " + recvbuf + "\n";
+
+							fprintf(logF, format.c_str());
+							LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
+							iResult = -1;
+						}
+						else if (iResult == 0) {
+							std::cout << "Connection closing...\n";
+						}
+						else {
+							std::cout << "recv failed with error: " << WSAGetLastError() << "\n";
+							closesocket(sock);
+							WSACleanup();
+							ExitProcess(EXIT_FAILURE);
+						}
+					} while (iResult > 0);
+
 					cc++;
 				}else if(cc > cps){
 					Sleep(1000);
@@ -703,6 +800,25 @@ namespace Test{
 		public: System::Void execComs_Click(System::Object^ sender, System::EventArgs^ e) {
 			int c = queueList->Items->Count;
 			int n = queueList->Items->Count;
+
+			string ip = msclr::interop::marshal_as<std::string>(ipv->Text);
+			string port = msclr::interop::marshal_as<std::string>(portv->Text);
+
+			// Define server info
+			SOCKADDR_IN sin;
+			ZeroMemory(&sin, sizeof(sin));
+			sin.sin_family = AF_INET;
+			sin.sin_addr.s_addr = inet_addr(ip.c_str());
+			sin.sin_port = htons(stoi(port));
+
+			// Connect to server
+			if (connect(sock, (const sockaddr*)&sin, sizeof(sin)) != 0) {
+				closesocket(sock);
+				fprintf(stderr, "connect()\n");
+				getchar();
+				//ExitProcess(EXIT_FAILURE);
+			}
+
 			for(int i = 0; i < n; i++){
 				//
 				time_t now = time(0);
@@ -718,11 +834,50 @@ namespace Test{
 				fprintf(logF, format.c_str());
 				LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
 
+				if (!send(sock, (msclr::interop::marshal_as<std::string>(queueList->Items[i]->ToString())).c_str(), strlen(msclr::interop::marshal_as<std::string>(queueList->Items[i]->ToString()).c_str()), 0)) {
+					closesocket(sock);
+					fprintf(stderr, "send()\n");
+					getchar();
+					ExitProcess(EXIT_FAILURE);
+				}
+				cout << "Sent data! Preparing to receive!\n";
+
+				int iResult;
+				char recvbuf[512];
+				int recvbuflen = 512;
+
+				do {
+					iResult = recv(sock, recvbuf, recvbuflen, 0);
+					if (iResult > 0) {
+						cout << "Data received!\n";
+
+						h = time.substr(11, 2);
+						m = time.substr(14, 2);
+						s = time.substr(17, 2);
+
+						format = "<- " + h + ":" + m + ":" + s + "    " + recvbuf + "\n";
+
+						fprintf(logF, format.c_str());
+						LogBox->Items->Add(msclr::interop::marshal_as<System::String^>(format));
+						iResult = -1;
+					}
+					else if (iResult == 0) {
+						std::cout << "Connection closing...\n";
+					}
+					else {
+						std::cout << "recv failed with error: " << WSAGetLastError() << "\n";
+						closesocket(sock);
+						WSACleanup();
+						ExitProcess(EXIT_FAILURE);
+					}
+				} while (iResult > 0);
+
 				prog->Value = 100 / c;
 				c--;
 				//Sending Code / function
 			}
 			queueList->Items->Clear();
+			closesocket(sock);
 		}
 		public: System::Void remCom_Click(System::Object^ sender, System::EventArgs^ e) {
 			int rIndex = queueList->SelectedIndex;

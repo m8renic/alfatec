@@ -1,3 +1,6 @@
 ﻿  MyForm.cpp
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(601,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(736,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\GitHub\projects\alfatec\project\Test\MyForm.h(837,111): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   MyForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Test.vcxproj -> D:\GitHub\projects\alfatec\project\x64\Debug\Test.exe
